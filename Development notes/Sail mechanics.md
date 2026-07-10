@@ -9,7 +9,7 @@
 the default "forward" normal vector for a fore-and-aft rigged sail is what would be the left/port facing face. this is 0 radians. the right/starboard face is PI radians
 #### Process:
 - 0° and 180° (zero and pi radians) are the faces of the sail. at these angles the wind would be experiencing the most resistance
-- we make a normal vector for the sail, in the direction of its local -z axis. 
+- we make a normal vector for the sail, in the direction of its local -z axis.
 - To get the wind vector relative to the sail, we run
   `sail_normal.angle_to(apparent_wind)`
   *note: be sure to use [[apparent_wind]] rather than point_wind, as the latter doesn't take the sail's movement into account.*
