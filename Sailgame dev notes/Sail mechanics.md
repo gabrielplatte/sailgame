@@ -2,7 +2,7 @@
 
 **Luffing mode:** Sail is edge-on to the wind. Very small drag force that gets stronger the further off precisely edge-on you get. Rippling animation that's faster at higher apparent wind speeds.
 
-**Wing force:** Strongest at a slight angle to the wind, when the sail is acting as a wing. Efficient. Force direction is on the normal axis. Force and efficiency peak at 90°.
+**Wing force:** Strongest at a slight angle to the wind, when the sail is acting as a wing. Efficient. Force direction is on the normal axis. Force and efficiency peak at 90° (though actually reaching 90º is impossible).
 
 **Parachute force:** Strongest near perpendicular to the wind, when sail is acting as a parachute. Inefficient. Force is applied directly towards downwind. Force and efficiency peak at 0° and 180°.
 
@@ -34,7 +34,7 @@ the default "forward" normal vector for a fore-and-aft rigged sail is what would
 - (when sail tension is implemented) Decrease the above value at higher looseness values
 **Deflection force:**
 - Force is applied at the tangent to the wind vector that is closest to the sail's normal vector or antinormal vector, depending on whether the incidence angle is below or above PI radians.
-- Scale the force based on incidence angle so that it peaks at 45 and 135 degrees, and drops to nothing at 0, 90, and 180.
+- Scale the force based on incidence angle so that it peaks at 45º and 135º, and drops to nothing at 0º, 90º, and 180º.
 - (when sail tension is implemented) Decrease the overall force at higher looseness values
 - Divide this force by a set value if luffing
 - (when sail tension is implemented) Increase the above value at higher looseness values
