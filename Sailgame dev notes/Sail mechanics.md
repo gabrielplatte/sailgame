@@ -1,3 +1,5 @@
+### Physics code
+
 **Driving mode:** Sail is catching wind. Inefficient downwind drag force that increases the closer you get to perpendicular with apparent wind, and efficient orthogonal lift force that increases the closer you get to parallel with apparent wind. Billowing animation that strengthens at higher total force values.
 
 **Luffing mode:** Sail is edge-on to the wind. Very small drag force that gets stronger the further off precisely edge-on you get. Rippling animation that's faster at higher apparent wind speeds.
@@ -7,15 +9,16 @@
 **Parachute force:** Strongest near perpendicular to the wind, when sail is acting as a parachute. Inefficient. Force is applied directly towards downwind. Force and efficiency peak at 0° and 180°.
 
 **Deflection force:** Derived as a fraction of the parachute force's strength, and applied at a tangent to wind direction.
-#### Convention:
-the default "forward" normal vector for a fore-and-aft rigged sail is what would be the left/port facing face. this is 0 radians. the right/starboard face is PI radians
-#### Process:
+
+Convention: the default "forward" normal vector for a fore-and-aft rigged sail is what would be the left/port facing face. this is 0 radians. the right/starboard face is PI radians
+#### Sail script:
+- Get the wind vector at current coordinates
+- Subtract current velocity from wind vector to get apparent wind, which will be used for all force calculations.
 - 0° and 180° (zero and pi radians) are the faces of the sail. at these angles the wind would be experiencing the most resistance
-- we make a normal vector for the sail, in the direction of its local -z axis.
-- To get the wind vector relative to the sail, we run
+- Make a normal vector for the sail, in the direction of its local -z axis.
+- To get the wind vector relative to the sail, run
   `sail_normal.angle_to(apparent_wind)`
-  *note: be sure to use [[apparent_wind]] rather than point_wind, as the latter doesn't take the sail's movement into account.*
-- Next, we use the output of the angle_to function to decide whether the sail is luffing. These values can be set using deg_to_rad. For example, luffing may begin when the incidence angle is less than 95 degrees and greater than 85.
+- Use the output of the angle_to function to decide whether the sail is luffing. These values can be set using deg_to_rad. For example, luffing may begin when the incidence angle is less than 95 degrees and greater than 85.
 - (low priority) Implement a delay on coming out of luffing. Shorten the delay at higher apparent wind speeds.
 - (when sail tension is implemented) Lengthen the above delay at higher looseness values, and introduce some randomness into the delay that also increases with looseness.
 ##### Driving process:
