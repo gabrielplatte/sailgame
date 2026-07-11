@@ -1,1 +1,7 @@
-{}
+{
+  "accentColor": "",
+  "theme": "obsidian",
+  "enabledCssSnippets": [
+    "italic-h6"
+  ]
+}
