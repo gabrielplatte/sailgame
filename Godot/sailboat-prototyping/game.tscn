@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://hyujhsiucej6"]
 
 [ext_resource type="Texture2D" uid="uid://c5ux2nnkapcgv" path="res://sea placeholder.png" id="1_80nbo"]
+[ext_resource type="PackedScene" uid="uid://cgvrndldy8js0" path="res://boat.tscn" id="2_e2o6t"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_86xdo"]
 size = Vector3(1000, 0, 1000)
@@ -11,6 +12,17 @@ uv1_scale = Vector3(250, 250, 250)
 uv1_triplanar = true
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_pk7y5"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_e2o6t"]
+points = PackedVector3Array(0.9557525, 0.53204566, 2.3236542, 0.8533696, 0.53204566, 2.9378715, -0.27208126, 0.6344286, -2.48622, -0.88599813, 0.22503713, 2.8352883, 0.034686886, -0.6958482, 2.6307628, 0.83148277, 0.18578893, -0.9617052, -0.06731542, -0.79837143, -2.2810535, 0.7509867, -0.3888397, 1.1978024, -0.988381, 0.53204566, 1.9139621, 0.54641116, 0.53204566, -2.6907454, -0.6612743, -0.25385296, -1.0252999, -0.78361523, -0.28645676, 1.9139621, 0.34164533, -0.3888397, -2.6907454, -0.16969834, 0.53204566, -3.5094883, -0.8676198, 0.27643794, -0.69533396, -0.37427387, -0.3888397, -2.5881622, -0.88599813, 0.53204566, 2.9378715, 0.7509867, -0.18407384, 2.6307628, -0.06731542, -0.79837143, 1.7094367, -0.7610084, 0.4438, -1.300597, 0.9557525, 0.1226542, 2.0165453, 0.034686886, -0.79837143, -2.2810535, 0.034686886, 0.53204566, -3.6120715, -0.68123233, -0.28645676, 2.6307628, -0.06731542, -0.6958482, -2.6907454, 0.034686886, -0.79837143, 1.7094367, 0.81604844, 0.4438, -1.0381744, 0.62932414, -0.25403374, -1.1981199, -0.88599813, 0.3272798, 2.9378715, -0.6038552, 0.27965486, -2.054834, -0.16969834, 0.3272798, -3.5094883, 0.8533696, 0.1226542, 2.8352883)
+
+[sub_resource type="PrismMesh" id="PrismMesh_onkqf"]
+lightmap_size_hint = Vector2i(14, 21)
+left_to_right = 0.7
+size = Vector3(1.5, 1.77, 0.01)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aamgp"]
+albedo_color = Color(0.46701592, 0.45169497, 0.30960205, 1)
 
 [node name="game" type="Node3D" unique_id=389847365]
 
@@ -23,3 +35,18 @@ shape = SubResource("BoxShape3D_86xdo")
 transform = Transform3D(500, 0, 0, 0, 500, 0, 0, 0, 500, 8.9645386e-05, 0, -0.0010967255)
 material_override = SubResource("StandardMaterial3D_e2o6t")
 mesh = SubResource("PlaneMesh_pk7y5")
+
+[node name="boat" parent="." unique_id=2114586621 instance=ExtResource("2_e2o6t")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="boat" unique_id=1801413106]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.36225593, 0.024880193)
+shape = SubResource("ConvexPolygonShape3D_e2o6t")
+
+[node name="floater0" type="RayCast3D" parent="boat" unique_id=2026097094]
+
+[node name="floater1" type="RayCast3D" parent="boat" unique_id=539512019]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="boat" unique_id=1929363324]
+transform = Transform3D(-4.371139e-08, 0, -1, -1, -4.371139e-08, 4.371139e-08, -4.371139e-08, 1, 1.9106855e-15, 0, 1.6575752, -0.0843811)
+mesh = SubResource("PrismMesh_onkqf")
+surface_material_override/0 = SubResource("StandardMaterial3D_aamgp")

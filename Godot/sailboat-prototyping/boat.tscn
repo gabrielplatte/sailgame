@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://cgvrndldy8js0"]
+
+[ext_resource type="PackedScene" uid="uid://ykkhr0n4vos" path="res://dinghy.tscn" id="1_annr2"]
+[ext_resource type="PackedScene" uid="uid://cq4ffpatnhlem" path="res://mast.tscn" id="2_henu8"]
+[ext_resource type="PackedScene" uid="uid://ltlhf0xjcdvv" path="res://rudder.tscn" id="3_anwow"]
+
+[node name="boat" type="RigidBody3D" unique_id=1866504484]
+
+[node name="dinghy" parent="." unique_id=1108682375 instance=ExtResource("1_annr2")]
+
+[node name="mast" parent="dinghy" unique_id=623547759 instance=ExtResource("2_henu8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0006250888, 0.48310435, -0.9657596)
+
+[node name="rudder" parent="dinghy" unique_id=533331030 instance=ExtResource("3_anwow")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.32618064, 1.4062232)

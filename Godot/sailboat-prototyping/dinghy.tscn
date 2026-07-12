@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://ykkhr0n4vos"]
+
+[ext_resource type="PackedScene" uid="uid://c3xd7xh2injl6" path="res://dinghy.glb" id="1_twl7g"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r4ro0"]
+albedo_color = Color(0.6545, 0.66, 0.594, 1)
+
+[node name="dinghy" unique_id=1108682375 instance=ExtResource("1_twl7g")]
+
+[node name="boat" parent="." index="0" unique_id=1743546781]
+surface_material_override/0 = SubResource("StandardMaterial3D_r4ro0")

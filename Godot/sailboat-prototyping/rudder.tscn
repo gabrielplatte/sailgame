@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://ltlhf0xjcdvv"]
+
+[ext_resource type="PackedScene" uid="uid://bkk3cab3cxi1" path="res://rudder.glb" id="1_b4sjs"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b4sjs"]
+albedo_color = Color(0.6444331, 0.52580416, 0.27232763, 1)
+
+[node name="rudder2" unique_id=533331030 instance=ExtResource("1_b4sjs")]
+
+[node name="rudder" parent="." index="0" unique_id=1470440410]
+transform = Transform3D(0.43596515, 0, 0, 0, 0.43596515, 0, 0, 0, 0.21489133, 0, 0, 0)
+surface_material_override/0 = SubResource("StandardMaterial3D_b4sjs")
