@@ -1,8 +1,12 @@
 78098b89c88a74ebe8c20117b8754620
-::res://::1783830252
-dinghy.glb::PackedScene::6785850194066392897::1783830436::1783830462::1::::<><><>0<>0<>a609f6328cd611c22ff75369a07e95ca<>res://.godot/imported/dinghy.glb-d3eccecb2f476649da47c776c0cc78aa.scn::
+::res://::1783833032
+dinghy.glb::PackedScene::6785850194066392897::1783834723::1783834727::1::::<><><>0<>0<>a609f6328cd611c22ff75369a07e95ca<>res://.godot/imported/dinghy.glb-d3eccecb2f476649da47c776c0cc78aa.scn::
 icon.svg::CompressedTexture2D::5601789823602435298::1783812239::1783812242::1::::<><><>0<>0<>0898f4bee2d97cc021e30e650d56d2e4<>res://.godot/imported/icon.svg-218a8f2b3041327d8a5756f3a245f83b.ctex::
-game.tscn::PackedScene::542097779424358833::1783826194::0::1::::<><><>0<>0<><>::uid://c5ux2nnkapcgv::::res://sea placeholder.png
+game.tscn::PackedScene::542097779424358833::1783833032::0::1::::<><><>0<>0<><>::uid://c5ux2nnkapcgv::::res://sea placeholder.png<>uid://cgvrndldy8js0::::res://boat.tscn
 mast.glb::PackedScene::3128825390294029852::1783830460::1783830462::1::::<><><>0<>0<>840b0bfb0f0c2e096cd0967e485bd13b<>res://.godot/imported/mast.glb-e0c68fa73a28a9476ad068f12b8447d0.scn::
+dinghy.tscn::PackedScene::50170489043696858::1783833025::0::1::::<><><>0<>0<><>::uid://c3xd7xh2injl6::::res://dinghy.glb
+boat.tscn::PackedScene::5238381940980030665::1783833024::0::1::::<><><>0<>0<><>::uid://ykkhr0n4vos::::res://dinghy.tscn<>uid://cq4ffpatnhlem::::res://mast.tscn<>uid://ltlhf0xjcdvv::::res://rudder.tscn
+mast.tscn::PackedScene::5956043123126996136::1783831422::0::1::::<><><>0<>0<><>::uid://bktvkdnj8uk8c::::res://mast.glb
+rudder.tscn::PackedScene::811981147117243051::1783830976::0::1::::<><><>0<>0<><>::uid://bkk3cab3cxi1::::res://rudder.glb
 rudder.glb::PackedScene::91489898465290486::1783830450::1783830462::1::::<><><>0<>0<>a380fdba9623e8ab100fd267b0771df7<>res://.godot/imported/rudder.glb-1367201bb6c2f7ab87d46967cdd98a31.scn::
 sea placeholder.png::CompressedTexture2D::6921239642218385633::1783812852::1783812974::1::::<><><>0<>0<>8078922a44ed44d455338bfe741b04fb<>res://.godot/imported/sea placeholder.png-a86a117bd721138d18547ab092be2ce5.s3tc.ctex::

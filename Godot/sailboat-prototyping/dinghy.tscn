@@ -7,5 +7,5 @@ albedo_color = Color(0.6545, 0.66, 0.594, 1)
 
 [node name="dinghy" unique_id=1108682375 instance=ExtResource("1_twl7g")]
 
-[node name="boat" parent="." index="0" unique_id=1743546781]
+[node name="boat" parent="." index="0" unique_id=880402126]
 surface_material_override/0 = SubResource("StandardMaterial3D_r4ro0")
