@@ -3,6 +3,7 @@
 - Place them at or just below deck level, and make each one about as long as the distance from deck to keel at that spot.
 - Set them to only collide with the water surface (collision layers are amazing)
 - Each frame, update all floaters to point straight downwards.
+- For each raycast, get its length, then measure the collision point
 - Apply an upward force to the boat at the location of each floater, and scale it linearly based on how close the collision point is. 
 - A longer raycast at the same point pointing upwards will deal with cases where the floater becomes submerged.
 

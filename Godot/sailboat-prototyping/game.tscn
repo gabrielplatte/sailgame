@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://hyujhsiucej6"]
+
+[ext_resource type="Texture2D" uid="uid://c5ux2nnkapcgv" path="res://sea placeholder.png" id="1_80nbo"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_86xdo"]
+size = Vector3(1000, 0, 1000)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e2o6t"]
+albedo_texture = ExtResource("1_80nbo")
+uv1_scale = Vector3(250, 250, 250)
+uv1_triplanar = true
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_pk7y5"]
+
+[node name="game" type="Node3D" unique_id=389847365]
+
+[node name="water" type="StaticBody3D" parent="." unique_id=386051915]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="water" unique_id=1612443379]
+shape = SubResource("BoxShape3D_86xdo")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="water" unique_id=2109826213]
+transform = Transform3D(500, 0, 0, 0, 500, 0, 0, 0, 500, 8.9645386e-05, 0, -0.0010967255)
+material_override = SubResource("StandardMaterial3D_e2o6t")
+mesh = SubResource("PlaneMesh_pk7y5")
