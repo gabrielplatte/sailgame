@@ -33,11 +33,13 @@ Convention: the default "forward" normal vector for a fore-and-aft rigged sail i
 **Parachute force:**
 - Force is always applied in the same direction as apparent wind
 - Scale force linearly based on incidence angle: from 1 × current base force value (incidence angle 0 rad) to 0 (incidence angle PI/2 rad) to 1 again (incidence angle PI rad)
-- Divide this force by a set value if luffing
-- (when sail tension is implemented) Decrease the above value at higher looseness values
+- Multiply this force by a set value if luffing
+- (when sail tension is implemented) Increase parachute force at higher looseness values
 **Deflection force:**
-- Force is applied at the tangent to the wind vector that is closest to the sail's normal vector or antinormal vector, depending on whether the incidence angle is below or above PI radians.
+- Force is applied at the tangent to the wind vector that is closest to the sail's normal vector or antinormal vector, depending on whether the incidence angle is below or above PI/2 rad.
 - Scale the force based on incidence angle so that it peaks at 45º and 135º, and drops to nothing at 0º, 90º, and 180º.
+- Divide deflection force by a set value if luffing
 - (when sail tension is implemented) Decrease the overall force at higher looseness values
-- Divide this force by a set value if luffing
-- (when sail tension is implemented) Increase the above value at higher looseness values
+
+### Animation
+

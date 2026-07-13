@@ -1,5 +1,2 @@
 res://game.tscn
-res://rudder.tscn
-res://boat.tscn
-res://mast.tscn
-res://dinghy.tscn
+res://boat.gd
