@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://hyujhsiucej6"]
 
+[ext_resource type="Script" uid="uid://brst72wplfvdr" path="res://game.gd" id="1_7jktm"]
 [ext_resource type="Texture2D" uid="uid://c5ux2nnkapcgv" path="res://sea placeholder.png" id="1_80nbo"]
 [ext_resource type="PackedScene" uid="uid://cgvrndldy8js0" path="res://boat.tscn" id="2_e2o6t"]
 [ext_resource type="Script" uid="uid://c0jqe5t7npvwa" path="res://rigid_body_3d.gd" id="2_fc0e3"]
@@ -34,6 +35,7 @@ absorbent = true
 [sub_resource type="BoxShape3D" id="BoxShape3D_pk7y5"]
 
 [node name="game" type="Node3D" unique_id=389847365]
+script = ExtResource("1_7jktm")
 
 [node name="water" type="StaticBody3D" parent="." unique_id=386051915]
 collision_layer = 2
@@ -55,8 +57,11 @@ transform = Transform3D(-0.899519, -0.37500006, 0.22414388, 0.37500003, -0.39951
 [node name="boat" parent="boat_complex" unique_id=2114586621 instance=ExtResource("2_e2o6t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.39999998, 0)
 center_of_mass_mode = 1
+linear_damp = 0.3
 angular_damp = 0.3
 script = ExtResource("3_feb5d")
+wind_scale = 0.43
+wind_position = Vector3(0, 1, -0.5)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="boat_complex/boat" unique_id=1929363324]
 transform = Transform3D(-4.371139e-08, 0, -1, -1, -4.371139e-08, 4.371139e-08, -4.371139e-08, 1, 1.9106855e-15, 0, 1.6575754, -0.0843811)
@@ -72,14 +77,20 @@ transform = Transform3D(1, 0, 0, 0, 0.86199915, 0.5069098, 0, -0.5069098, 0.8619
 
 [node name="floater0" type="RayCast3D" parent="boat_complex/boat" unique_id=2026097094 groups=["floaters"]]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.59999996, 1.3)
-target_position = Vector3(0, -0.6, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.2, 0.59999996, 1.3)
+target_position = Vector3(0, 10, 0)
 collision_mask = 2
 
 [node name="floater1" type="RayCast3D" parent="boat_complex/boat" unique_id=539512019 groups=["floaters"]]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, -1.3)
-target_position = Vector3(0, -0.6, 0)
+target_position = Vector3(0, 10, 0)
+collision_mask = 2
+
+[node name="floater2" type="RayCast3D" parent="boat_complex/boat" unique_id=1818584516 groups=["floaters"]]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2, 0.6, 1.3)
+target_position = Vector3(0, 10, 0)
 collision_mask = 2
 
 [node name="RigidBody3D" type="RigidBody3D" parent="boat_complex" unique_id=721788405]
@@ -87,7 +98,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 collision_layer = 2
 collision_mask = 2
 physics_material_override = SubResource("PhysicsMaterial_pk7y5")
-linear_damp = 0.3
 script = ExtResource("2_fc0e3")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="boat_complex/RigidBody3D" unique_id=934350002]
