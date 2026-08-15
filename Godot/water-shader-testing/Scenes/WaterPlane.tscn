@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://cc2obqmm5s5tg"]
+
+[ext_resource type="Material" uid="uid://cl8enhjlcqnh1" path="res://Shaders/Water.tres" id="1_66nk0"]
+[ext_resource type="Script" uid="uid://dcy30q0vi6h0s" path="res://Scenes/water_plane.gd" id="2_ubjvq"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_86xdo"]
+subdivide_width = 500
+subdivide_depth = 500
+orientation = 1
+
+[node name="WaterPlane" type="MeshInstance3D" unique_id=293538920]
+cast_shadow = 0
+mesh = SubResource("QuadMesh_86xdo")
+surface_material_override/0 = ExtResource("1_66nk0")
+script = ExtResource("2_ubjvq")
