@@ -46,4 +46,4 @@ shader_parameter/wave_direction = Vector2(2, 0)
 shader_parameter/wave_direction2 = Vector2(0, 1)
 shader_parameter/time_scale = 0.025
 shader_parameter/noise_scale = 3.49
-shader_parameter/height_scale = 0.0
+shader_parameter/height_scale = 0.15
