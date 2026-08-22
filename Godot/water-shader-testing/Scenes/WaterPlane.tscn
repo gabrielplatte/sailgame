@@ -1,15 +1,128 @@
 [gd_scene format=3 uid="uid://cc2obqmm5s5tg"]
 
-[ext_resource type="Material" uid="uid://cl8enhjlcqnh1" path="res://Shaders/Water.tres" id="1_66nk0"]
-[ext_resource type="Script" uid="uid://dcy30q0vi6h0s" path="res://Scenes/water_plane.gd" id="2_ubjvq"]
+[ext_resource type="Script" uid="uid://bfgi7xd3atywg" path="res://Scenes/water_plane.gd" id="2_ubjvq"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_86xdo"]
-subdivide_width = 500
-subdivide_depth = 500
+subdivide_width = 100
+subdivide_depth = 100
 orientation = 1
+
+[sub_resource type="Shader" id="Shader_66nk0"]
+code = "shader_type spatial;
+
+uniform vec3 albedo: source_color;
+uniform float metallic: hint_range(0.0, 1.0) = 0;
+uniform float roughness: hint_range(0.0, 1.0) = 0.02;
+uniform float freq1: hint_range(0.0, 10, 0.1) = 1;
+uniform float freq2: hint_range(0.0, 10, 0.1) = 1;
+uniform float amp1: hint_range(0.0, 1.0, 0.1) = 0.1;
+uniform float amp2: hint_range(0.0, 1.0, 0.1) = 0.1;
+uniform sampler2D texnorm1;
+uniform sampler2D texnorm2;
+uniform sampler2D texnorm3;
+uniform vec2 normdir1 = vec2(2.0, 0.8);
+uniform vec2 normdir2 = vec2(-2.0, -0.8);
+uniform vec2 normdir3 = vec2(0.0, 0.0);
+uniform float time_scale: hint_range(0.0, 0.2, 0.005) = 0.025;
+uniform float height_scale: hint_range(0.0, 0.5, 0.001) = 0.15;
+
+varying float vertwave1;
+varying float vertwave2;
+varying float vertwaves;
+varying vec3 world_pos;
+
+varying float wave_time;
+
+void vertex(){
+	world_pos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
+	vertwave1 = sin((world_pos.x * freq1) + TIME * 30.0 * time_scale);
+	vertwave2 = sin((world_pos.z * freq2) + TIME * 30.0 * time_scale);
+	
+	vertwaves = (vertwave1 * vertwave2) / 2.0;
+	VERTEX.y += vertwaves * height_scale;
+}
+
+void fragment() {
+	
+	vec2 time = (TIME * normdir1) * time_scale;
+	vec2 time2 = (TIME * normdir2) * time_scale;
+	vec2 time3 = (TIME * normdir3) * time_scale;
+	
+	vec3 oppnormwave = mix (texture(texnorm1, world_pos.xz + time).rgb, texture(texnorm2, world_pos.xz + time2).rgb, 0.5);
+	vec3 normal_blend = mix (oppnormwave, texture(texnorm3, world_pos.xz + time3).rgb, 0.5);
+	
+	ALBEDO = albedo;
+	METALLIC = metallic;
+	ROUGHNESS = roughness;
+	NORMAL_MAP = normal_blend;
+}
+
+//void light() {
+//	// Called for every pixel for every light affecting the material.
+//	// Uncomment to replace the default light processing function with this one.
+//}
+"
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ubjvq"]
+resource_local_to_scene = true
+frequency = 0.037
+fractal_lacunarity = 1.07
+fractal_gain = 1.11
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_mclji"]
+resource_local_to_scene = true
+noise = SubResource("FastNoiseLite_ubjvq")
+seamless = true
+as_normal_map = true
+seamless_blend_skirt = 0.277
+bump_strength = 4.3
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_cy6w2"]
+resource_local_to_scene = true
+frequency = 0.0422
+fractal_type = 0
+fractal_lacunarity = 0.49
+fractal_gain = 1.59
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_2ufjy"]
+resource_local_to_scene = true
+noise = SubResource("FastNoiseLite_cy6w2")
+seamless = true
+as_normal_map = true
+seamless_blend_skirt = 0.277
+bump_strength = 2.3
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_r08cw"]
+frequency = 0.0101
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_qumfl"]
+noise = SubResource("FastNoiseLite_r08cw")
+seamless = true
+as_normal_map = true
+seamless_blend_skirt = 1.0
+bump_strength = 4.6
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wiijv"]
+render_priority = 0
+shader = SubResource("Shader_66nk0")
+shader_parameter/albedo = Color(0, 0.32156864, 0.43137255, 1)
+shader_parameter/metallic = 0.0
+shader_parameter/roughness = 0.058000002755
+shader_parameter/freq1 = 7.20000010728864
+shader_parameter/freq2 = 4.80000007152576
+shader_parameter/amp1 = 0.1
+shader_parameter/amp2 = 0.1
+shader_parameter/texnorm1 = SubResource("NoiseTexture2D_mclji")
+shader_parameter/texnorm2 = SubResource("NoiseTexture2D_2ufjy")
+shader_parameter/texnorm3 = SubResource("NoiseTexture2D_qumfl")
+shader_parameter/normdir1 = Vector2(2, 0.8)
+shader_parameter/normdir2 = Vector2(-2, 0.8)
+shader_parameter/normdir3 = Vector2(0, 0)
+shader_parameter/time_scale = 0.02999999932944
+shader_parameter/height_scale = 0.038000001805
 
 [node name="WaterPlane" type="MeshInstance3D" unique_id=293538920]
 cast_shadow = 0
 mesh = SubResource("QuadMesh_86xdo")
-surface_material_override/0 = ExtResource("1_66nk0")
+surface_material_override/0 = SubResource("ShaderMaterial_wiijv")
 script = ExtResource("2_ubjvq")

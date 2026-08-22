@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dklygaacmq4vk"]
 
 [ext_resource type="PackedScene" uid="uid://cc2obqmm5s5tg" path="res://Scenes/WaterPlane.tscn" id="1_s486e"]
-[ext_resource type="Script" uid="uid://yy7x54cr84eo" path="res://Scenes/log.gd" id="2_7yn8b"]
+[ext_resource type="Script" uid="uid://bfk0jp857urph" path="res://Scenes/Water.gd" id="2_etk83"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_p22r8"]
 rayleigh_coefficient = 1.13
@@ -20,18 +20,12 @@ sky_material = SubResource("PhysicalSkyMaterial_p22r8")
 background_mode = 2
 sky = SubResource("Sky_86xdo")
 
-[sub_resource type="CylinderMesh" id="CylinderMesh_pk7y5"]
-top_radius = 0.1
-bottom_radius = 0.1
-radial_segments = 12
-
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_pk7y5"]
-radius = 0.1
-
 [node name="Map" type="Node3D" unique_id=1276579954]
 
-[node name="WaterPlane" parent="." unique_id=293538920 instance=ExtResource("1_s486e")]
+[node name="Water" parent="." unique_id=293538920 instance=ExtResource("1_s486e")]
+unique_name_in_owner = true
 transform = Transform3D(22.49, 0, 0, 0, 1, 0, 0, 0, 22.49, 0, 0, 0)
+script = ExtResource("2_etk83")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=840405040]
 transform = Transform3D(0.47442546, 0.10711062, -0.87375504, 0.5713523, 0.71762997, 0.39820063, 0.66968405, -0.6881386, 0.279264, 0, 0, 0)
@@ -40,16 +34,4 @@ transform = Transform3D(0.47442546, 0.10711062, -0.87375504, 0.5713523, 0.717629
 environment = SubResource("Environment_pk7y5")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1346638864]
-transform = Transform3D(0.36666346, -0.14072561, 0.91964895, 0, 0.988494, 0.15126035, -0.93035364, -0.05546164, 0.3624446, 0.7137909, 0.23552895, 0.2754407)
-
-[node name="log" type="RigidBody3D" parent="." unique_id=200628597]
-script = ExtResource("2_7yn8b")
-float_force = 1.2
-water_drag = 0.005
-water_angular_drag = 0.005
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="log" unique_id=1924991272]
-mesh = SubResource("CylinderMesh_pk7y5")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="log" unique_id=235000894]
-shape = SubResource("CylinderShape3D_pk7y5")
+transform = Transform3D(0.36666346, -0.14072561, 0.91964895, 0, 0.988494, 0.15126035, -0.93035364, -0.05546164, 0.3624446, 1.3726501, 0.3438959, 0.53510475)

@@ -10,7 +10,7 @@ fractal_type = 2
 noise = SubResource("FastNoiseLite_72wxp")
 seamless = true
 as_normal_map = true
-bump_strength = 1.5
+bump_strength = 10.0
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_2afh2"]
 noise_type = 3
@@ -21,7 +21,7 @@ fractal_type = 2
 noise = SubResource("FastNoiseLite_2afh2")
 seamless = true
 as_normal_map = true
-bump_strength = 1.5
+bump_strength = 10.0
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_lsb3u"]
 noise_type = 3

@@ -6,13 +6,15 @@ extends RigidBody3D
 
 @onready var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
-const water_height := 0.0
+@onready var water = %Water
+
+#const water_height := 0.0
 
 var submerged := false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	pass
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -20,11 +22,13 @@ func _process(delta: float) -> void:
 	pass
 
 func _physics_process(delta):
-	submerged = false
-	var depth = water_height - global_position.y
-	if depth > 0:
-		submerged = true
-		apply_central_force(Vector3.UP * float_force * gravity * depth)
+	#submerged = false
+	#var depth = water.get_height(global_position) - global_position.y
+	#if depth > 0:
+		#submerged = true
+		#apply_central_force(Vector3.UP * float_force * gravity * depth)
+	#apply_central_force(Vector3.FORWARD * 0.03)
+	pass
 
 func _integrate_forces(state: PhysicsDirectBodyState3D):
 	if submerged:
