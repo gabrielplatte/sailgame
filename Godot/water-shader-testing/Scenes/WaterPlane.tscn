@@ -10,6 +10,10 @@ orientation = 1
 [sub_resource type="Shader" id="Shader_66nk0"]
 code = "shader_type spatial;
 
+stencil_mode read, compare_not_equal, 1;
+
+render_mode blend_mix;
+
 uniform vec3 albedo: source_color;
 uniform float metallic: hint_range(0.0, 1.0) = 0;
 uniform float roughness: hint_range(0.0, 1.0) = 0.02;
@@ -23,7 +27,7 @@ uniform sampler2D texnorm3;
 uniform vec2 normdir1 = vec2(2.0, 0.8);
 uniform vec2 normdir2 = vec2(-2.0, -0.8);
 uniform vec2 normdir3 = vec2(0.0, 0.0);
-uniform float time_scale: hint_range(0.0, 0.2, 0.005) = 0.025;
+uniform float time_scale: hint_range(0.0, 0.2, 0.005) = 0.02;
 uniform float height_scale: hint_range(0.0, 0.5, 0.001) = 0.15;
 
 varying float vertwave1;
@@ -39,7 +43,11 @@ void vertex(){
 	vertwave2 = sin((world_pos.z * freq2) + TIME * 30.0 * time_scale);
 	
 	vertwaves = (vertwave1 * vertwave2) / 2.0;
+	
 	VERTEX.y += vertwaves * height_scale;
+	
+	
+
 }
 
 void fragment() {
@@ -55,6 +63,7 @@ void fragment() {
 	METALLIC = metallic;
 	ROUGHNESS = roughness;
 	NORMAL_MAP = normal_blend;
+	ALPHA = 1.0;
 }
 
 //void light() {
@@ -103,9 +112,9 @@ seamless_blend_skirt = 1.0
 bump_strength = 4.6
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wiijv"]
-render_priority = 0
+render_priority = 1
 shader = SubResource("Shader_66nk0")
-shader_parameter/albedo = Color(0, 0.32156864, 0.43137255, 1)
+shader_parameter/albedo = Color(1.2032688e-06, 0.2685539, 0.36289924, 1)
 shader_parameter/metallic = 0.0
 shader_parameter/roughness = 0.058000002755
 shader_parameter/freq1 = 7.20000010728864
@@ -118,11 +127,15 @@ shader_parameter/texnorm3 = SubResource("NoiseTexture2D_qumfl")
 shader_parameter/normdir1 = Vector2(2, 0.8)
 shader_parameter/normdir2 = Vector2(-2, 0.8)
 shader_parameter/normdir3 = Vector2(0, 0)
-shader_parameter/time_scale = 0.02999999932944
-shader_parameter/height_scale = 0.038000001805
+shader_parameter/time_scale = 0.03499999921768
+shader_parameter/height_scale = 0.0250000011875
 
 [node name="WaterPlane" type="MeshInstance3D" unique_id=293538920]
 cast_shadow = 0
 mesh = SubResource("QuadMesh_86xdo")
 surface_material_override/0 = SubResource("ShaderMaterial_wiijv")
 script = ExtResource("2_ubjvq")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1101272319]
+transform = Transform3D(1, 0, 0, 0, 0.775923, 0.6308276, 0, -0.6308276, 0.775923, 0, 0, 5.750594)
+visible = false
