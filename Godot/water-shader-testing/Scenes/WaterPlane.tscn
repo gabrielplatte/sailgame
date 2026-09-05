@@ -14,7 +14,9 @@ stencil_mode read, compare_not_equal, 1;
 
 render_mode blend_mix;
 
+
 uniform vec3 albedo: source_color;
+uniform vec3 secondary_color: source_color;
 uniform float metallic: hint_range(0.0, 1.0) = 0;
 uniform float roughness: hint_range(0.0, 1.0) = 0.02;
 uniform float freq1: hint_range(0.0, 10, 0.1) = 1;
@@ -37,6 +39,13 @@ varying vec3 world_pos;
 
 varying float wave_time;
 
+uniform sampler2D screen_texture : hint_screen_texture, repeat_disable, filter_nearest;
+uniform sampler2D depth_texture : hint_depth_texture, repeat_disable, filter_nearest;
+
+uniform float depth_distance : hint_range(0.0, 20.0, 0.1) = 4.0;
+uniform float beers_law : hint_range(0.0, 20.0, 0.1) = 12.0;
+uniform float water_transparency : hint_range(0.0, 1.0, 0.1) = 0.05;
+
 void vertex(){
 	world_pos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
 	vertwave1 = sin((world_pos.x * freq1) + TIME * 30.0 * time_scale);
@@ -52,6 +61,20 @@ void vertex(){
 
 void fragment() {
 	
+	float depth = textureLod(depth_texture, SCREEN_UV, 0.0).r;
+	vec3 screen = textureLod(screen_texture, SCREEN_UV, 0.0).rgb;
+	
+	vec3 ndc = vec3(SCREEN_UV * 2.0 - 1.0, depth);
+	vec4 world = INV_VIEW_MATRIX * INV_PROJECTION_MATRIX * vec4(ndc, 1.0);
+	float depth_texture_y = world.y / world.w;
+	float vertex_y = (INV_VIEW_MATRIX * vec4(VERTEX, 1.0)).y;
+	
+	float depth_blend = clamp ((vertex_y - depth_texture_y) / depth_distance, 0.0, 1.0);
+	depth_blend = exp (-depth_blend * beers_law);
+	
+	vec3 depth_color = mix(secondary_color, albedo, depth_blend);
+	vec3 final_color = mix(depth_color.rgb, screen, water_transparency);
+	
 	vec2 time = (TIME * normdir1) * time_scale;
 	vec2 time2 = (TIME * normdir2) * time_scale;
 	vec2 time3 = (TIME * normdir3) * time_scale;
@@ -59,7 +82,7 @@ void fragment() {
 	vec3 oppnormwave = mix (texture(texnorm1, world_pos.xz + time).rgb, texture(texnorm2, world_pos.xz + time2).rgb, 0.5);
 	vec3 normal_blend = mix (oppnormwave, texture(texnorm3, world_pos.xz + time3).rgb, 0.5);
 	
-	ALBEDO = albedo;
+	ALBEDO = mix(final_color, screen, depth_blend);
 	METALLIC = metallic;
 	ROUGHNESS = roughness;
 	NORMAL_MAP = normal_blend;
@@ -114,11 +137,12 @@ bump_strength = 4.6
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wiijv"]
 render_priority = 1
 shader = SubResource("Shader_66nk0")
-shader_parameter/albedo = Color(1.2032688e-06, 0.2685539, 0.36289924, 1)
+shader_parameter/albedo = Color(1.5883148e-06, 0.42435336, 0.57045305, 1)
+shader_parameter/secondary_color = Color(1.2273341e-06, 0.27776656, 0.3786671, 1)
 shader_parameter/metallic = 0.0
 shader_parameter/roughness = 0.058000002755
-shader_parameter/freq1 = 7.20000010728864
-shader_parameter/freq2 = 4.80000007152576
+shader_parameter/freq1 = 5.70000008493684
+shader_parameter/freq2 = 4.20000006258504
 shader_parameter/amp1 = 0.1
 shader_parameter/amp2 = 0.1
 shader_parameter/texnorm1 = SubResource("NoiseTexture2D_mclji")
@@ -129,6 +153,16 @@ shader_parameter/normdir2 = Vector2(-2, 0.8)
 shader_parameter/normdir3 = Vector2(0, 0)
 shader_parameter/time_scale = 0.03499999921768
 shader_parameter/height_scale = 0.0250000011875
+shader_parameter/depth_distance = 1.60000002384192
+shader_parameter/beers_law = 4.90000007301588
+shader_parameter/water_transparency = 0.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_pk7y5"]
+top_radius = 0.092285156
+bottom_radius = 0.092285156
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_86xdo"]
+albedo_color = Color(1, 0, 0, 1)
 
 [node name="WaterPlane" type="MeshInstance3D" unique_id=293538920]
 cast_shadow = 0
@@ -139,3 +173,9 @@ script = ExtResource("2_ubjvq")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1101272319]
 transform = Transform3D(1, 0, 0, 0, 0.775923, 0.6308276, 0, -0.6308276, 0.775923, 0, 0, 5.750594)
 visible = false
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1122056144]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.051463693, 0.046214342, -0.0042849183)
+visible = false
+mesh = SubResource("CylinderMesh_pk7y5")
+surface_material_override/0 = SubResource("StandardMaterial3D_86xdo")
