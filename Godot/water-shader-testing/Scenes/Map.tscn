@@ -66,7 +66,7 @@ transform = Transform3D(50, 0, 0, 0, 1, 0, 0, 0, 50, 0, 0, 0)
 script = SubResource("GDScript_s486e")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=840405040]
-transform = Transform3D(0.47442546, 0.10711062, -0.87375504, 0.5713523, 0.71762997, 0.39820063, 0.66968405, -0.6881386, 0.279264, 0, 0, 0)
+transform = Transform3D(-0.718344, 0.20263317, 0.6655236, 0.5713525, 0.7176299, 0.3982008, -0.3969106, 0.66629416, -0.6312799, 0, 0, 0)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1645788193]
 environment = SubResource("Environment_pk7y5")
