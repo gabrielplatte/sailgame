@@ -3,7 +3,7 @@ extends RigidBody3D
 @onready var label = %Label
 @onready var pointer = %pointer
 
-@export var wind_force := 0.5
+@export var wind_force := 1
 
 @export var float_force := 0.8
 @export var water_drag := 0.01
@@ -46,7 +46,7 @@ func _physics_process(delta):
 
 	var swing_axis = Input.get_axis("swing left", "swing right")
 	mast.rotation.y += swing_axis * swing_speed * 0.01
-	mast.rotation.y = clamp(mast.rotation.y, -(PI/5), (PI/5))
+	mast.rotation.y = clamp(mast.rotation.y, -(PI/2), (PI/2))
 
 	if Input.is_action_just_pressed("ui_select"):
 		position = start_pos
@@ -79,13 +79,12 @@ func _physics_process(delta):
 
 func parachute():
 	var scalar: float
-	if incidence_angle < (PI/2):
-		scalar = (-2 * incidence_angle) + 3
-	else:
-		scalar = (2 * incidence_angle) - 3
+	var i = incidence_angle/PI
+	scalar = 4*i*i - 4*i +1
+
 	var force_vector = scalar * parachute_coefficient * wind_force * wind_vector
 	apply_force(force_vector, sail.global_position - global_position)
-	label.text += "\n" + str(force_vector.z)
+	label.text += "\n" + str(i)
 	label.text += "\n" + str(scalar)
 
 func _integrate_forces(state: PhysicsDirectBodyState3D):
