@@ -23,9 +23,13 @@ uniform float freq1: hint_range(0.0, 10, 0.1) = 1;
 uniform float freq2: hint_range(0.0, 10, 0.1) = 1;
 uniform float amp1: hint_range(0.0, 1.0, 0.1) = 0.1;
 uniform float amp2: hint_range(0.0, 1.0, 0.1) = 0.1;
+
 uniform sampler2D texnorm1;
 uniform sampler2D texnorm2;
 uniform sampler2D texnorm3;
+
+uniform sampler2D test;
+
 uniform vec2 normdir1 = vec2(2.0, 0.8);
 uniform vec2 normdir2 = vec2(-2.0, -0.8);
 uniform vec2 normdir3 = vec2(0.0, 0.0);
@@ -85,7 +89,7 @@ void fragment() {
 	ALBEDO = mix(final_color, screen, depth_blend);
 	METALLIC = metallic;
 	ROUGHNESS = roughness;
-	NORMAL_MAP = normal_blend;
+	NORMAL_MAP = normal_blend * texture(test,world_pos.xz + time).rgb;
 	ALPHA = 1.0;
 }
 

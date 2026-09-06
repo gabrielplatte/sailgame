@@ -75,7 +75,7 @@ environment = SubResource("Environment_pk7y5")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.31399584, 1.519517, 4.1488113)
 
 [node name="boat" parent="." unique_id=1866504484 instance=ExtResource("2_7yn8b")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.39545816, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.004, -0.449, -0.006)
 script = ExtResource("3_etk83")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="boat" unique_id=2065099629]

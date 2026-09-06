@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://qq8b0rbwrwhm"]
+
+[ext_resource type="Script" uid="uid://brst72wplfvdr" path="res://Main.gd" id="1_ig7tw"]
+[ext_resource type="Texture2D" uid="uid://c5ux2nnkapcgv" path="res://sea placeholder.png" id="2_h2yge"]
+[ext_resource type="PackedScene" uid="uid://cgvrndldy8js0" path="res://boat.tscn" id="3_1bvp3"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_pk7y5"]
+size = Vector2(100, 100)
+orientation = 1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_86xdo"]
+render_priority = 1
+transparency = 1
+albedo_color = Color(0, 0.8, 0.6666666, 1)
+albedo_texture = ExtResource("2_h2yge")
+roughness = 0.6
+uv1_triplanar = true
+stencil_mode = 3
+stencil_flags = 1
+stencil_compare = 5
+
+[sub_resource type="Environment" id="Environment_pk7y5"]
+background_mode = 2
+ambient_light_color = Color(0.63579935, 0.63579947, 0.6357993, 1)
+ambient_light_energy = 2.63
+
+[node name="Main" type="Node3D" unique_id=642251443]
+script = ExtResource("1_ig7tw")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1467387812]
+mesh = SubResource("QuadMesh_pk7y5")
+surface_material_override/0 = SubResource("StandardMaterial3D_86xdo")
+
+[node name="boat" parent="." unique_id=1866504484 instance=ExtResource("3_1bvp3")]
+
+[node name="Camera3D" type="Camera3D" parent="boat" unique_id=921419123]
+transform = Transform3D(1, 0, 0, 0, 1, 5.2154064e-08, 0, -5.2154064e-08, 1, 0, 0.99999994, 0.7000001)
+fov = 87.5
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=312190950]
+transform = Transform3D(-0.43301272, 0.5, -0.75, -0.625, 0.43301266, 0.6495191, 0.649519, 0.75, 0.12499997, 0, 0, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2041127063]
+environment = SubResource("Environment_pk7y5")

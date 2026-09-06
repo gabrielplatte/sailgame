@@ -1,11 +1,13 @@
-PinJoint3D
+MeshInstance3D
 Node3D
+Marker3D
+WorldEnvironment
+DirectionalLight3D
+Camera3D
+PinJoint3D
 Node
 ConeTwistJoint3D
 CollisionShape3D
 RigidBody3D
-DirectionalLight3D
-Camera3D
-MeshInstance3D
 RayCast3D
 StaticBody3D

@@ -3,9 +3,9 @@
 [ext_resource type="PackedScene" uid="uid://c3xd7xh2injl6" path="res://dinghy.glb" id="1_twl7g"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r4ro0"]
-albedo_color = Color(0.6545, 0.66, 0.594, 1)
+albedo_color = Color(0, 0.42, 0.07700002, 1)
 
 [node name="dinghy" unique_id=1108682375 instance=ExtResource("1_twl7g")]
 
-[node name="boat" parent="." index="0" unique_id=880402126]
+[node name="boat" parent="." index="0" unique_id=1744950424]
 surface_material_override/0 = SubResource("StandardMaterial3D_r4ro0")

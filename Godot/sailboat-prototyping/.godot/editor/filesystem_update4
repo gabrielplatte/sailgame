@@ -1,2 +1,3 @@
-res://boat.gd
-res://game.tscn
+res://boat.tscn
+res://main.tscn
+res://dinghy.tscn

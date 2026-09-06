@@ -1,40 +1,56 @@
 extends RigidBody3D
 
-@onready var floaters: Array[RayCast3D] = [%floater0, %floater1, %floater2]
-@onready var input_vector: Vector2
-@onready var input_vector_to_3d: Vector3
-@onready var force_vector = to_local(Vector3())
-@export var wind_scale: float
-@export var wind_position = Vector3()
+@export var wind_force := 0.8
+
+@export var float_force := 0.8
+@export var water_drag := 0.01
+@export var water_ang_drag := 0.03
+
+@onready var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
+
+@onready var floaters = %FloaterContainer.get_children()
+
+@onready var sail = %sail
+
+@onready var start_basis := basis
+@onready var start_pos := global_position
+
+const water_height = 0.0
+
+var submerged := false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass
 
-func _physics_process(delta):
-	for floater in floaters:
-		floater.global_rotation = Vector3.ZERO
-		do_buoyancy(floater)
-		print(floater.global_rotation)
+func _physics_process(delta): 
+	submerged = false
+	
+	#For interaction with vertex waves, modify the following so each floater pulls water height from the same sampler2D as the shader 
+	for f in floaters:
+		var depth = water_height - f.global_position.y
+		if depth > 0:
+			submerged = true
+			apply_force(Vector3.UP * float_force * gravity * depth, f.global_position - global_position)
 
-	input_vector = Input.get_vector("left", "right", "forward", "back")
-	input_vector_to_3d = Vector3(input_vector.x, 0, input_vector.y)
-	force_vector = input_vector_to_3d * wind_scale
 
-	apply_force(force_vector, wind_position)
-	DebugDraw3D.draw_arrow_ray(wind_position, force_vector, force_vector.length())
-	#print(force_vector)
+# Temp code for testing, replace with sail function calls
+	var wind_vector: Vector3
+	wind_vector.x = Input.get_axis("ui_left", "ui_right")
+	wind_vector.z = Input.get_axis("ui_up", "ui_down")
+	wind_vector.y = 0.0
 
-	do_righting_forces()
+	var force = wind_vector.normalized() * wind_force
+	apply_force(force, sail.global_position - global_position)
 
-func do_buoyancy(floater: RayCast3D) -> void:
-	if floater.is_colliding():
-		var collision_point = floater.get_collision_point()
-		var floater_length = - floater.target_position.length()
-		var floater_depth = collision_point.y - floater.global_position.y
-		#print(floater_depth)
-		var buoyancy = Vector3.UP * floater_depth
-		apply_force(buoyancy, floater.position + to_local(Vector3(0, 0.6, 0)))
-		print(buoyancy)
-func do_righting_forces():
-	print(global_transform.basis.x)
+	if Input.is_action_just_pressed("ui_select"):
+		position = (start_pos)
+		basis = (start_basis)
+		linear_velocity = Vector3.ZERO
+		angular_velocity = Vector3.ZERO
+# End temp code
+
+func _integrate_forces(state: PhysicsDirectBodyState3D):
+	if submerged:
+		state.linear_velocity *= 1 - water_drag
+		state.angular_velocity *= 1 - water_ang_drag
