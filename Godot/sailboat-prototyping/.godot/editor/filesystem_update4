@@ -1,3 +1,5 @@
 res://boat.tscn
 res://main.tscn
 res://dinghy.tscn
+res://boat.gd
+res://sail_center.gd

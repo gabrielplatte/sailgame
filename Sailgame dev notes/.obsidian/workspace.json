@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Boat mechanics.md",
+                "file": "Sail mechanics.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Boat mechanics"
+              "title": "Sail mechanics"
             }
           },
           {
@@ -55,7 +55,9 @@
               "type": "file-explorer",
               "state": {
                 "sortOrder": "alphabetical",
-                "autoReveal": false
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
               },
               "icon": "lucide-folder-closed",
               "title": "Files"
@@ -196,8 +198,8 @@
   },
   "active": "4e21af8b03fc0e0b",
   "lastOpenFiles": [
-    "Sail mechanics.md",
     "Boat mechanics.md",
+    "Sail mechanics.md",
     "Sailing prototype project.md"
   ]
 }

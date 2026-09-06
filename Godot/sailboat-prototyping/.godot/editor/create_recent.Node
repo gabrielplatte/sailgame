@@ -1,6 +1,9 @@
 MeshInstance3D
-Node3D
 Marker3D
+RigidBody3D
+StaticBody3D
+Label
+Node3D
 WorldEnvironment
 DirectionalLight3D
 Camera3D
@@ -8,6 +11,4 @@ PinJoint3D
 Node
 ConeTwistJoint3D
 CollisionShape3D
-RigidBody3D
 RayCast3D
-StaticBody3D

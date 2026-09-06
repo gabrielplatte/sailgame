@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://bgxkcj1dwhjxi"]
+
+[ext_resource type="PackedScene" uid="uid://cdmeft2jpocfd" path="res://sail.glb" id="1_xa6x3"]
+
+[node name="sail" unique_id=1809568843 instance=ExtResource("1_xa6x3")]

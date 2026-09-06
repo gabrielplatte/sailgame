@@ -15,7 +15,7 @@ Convention: the default "forward" normal vector for a fore-and-aft rigged sail i
 - Get the wind vector at current coordinates
 - Subtract current velocity from wind vector to get apparent wind, which will be used for all force calculations.
 - 0° and 180° (zero and pi radians) are the faces of the sail. at these angles the wind would be experiencing the most resistance
-- Make a normal vector for the sail, in the direction of its local -z axis.
+- Make a normal vector for the sail, in the direction of its local x axis.
 - To get the wind vector relative to the sail, run
   `sail_normal.angle_to(apparent_wind)`
 - Use the output of the angle_to function to decide whether the sail is luffing. These values can be set using deg_to_rad. For example, luffing may begin when the incidence angle is less than 95 degrees and greater than 85.
@@ -29,7 +29,7 @@ Convention: the default "forward" normal vector for a fore-and-aft rigged sail i
 **Wing force:**
 - if not luffing:
 - Scale force linearly based on incidence angle: from 1 × current base force value (at PI/2 rad) to 0 (at 0 rad or PI rad)
-- If the incidence angle is less than 90°, wing force will be applied towards sail z (normal backward). If it's greater than 90°, multiply force by -1 so that wing force will be applied towards sail -z (normal forward).
+- If the incidence angle is less than 90°, wing force will be applied towards sail -x (normal backward). If it's greater than 90°, multiply force by -1 so that wing force will be applied towards sail x (normal forward).
 **Parachute force:**
 - Force is always applied in the same direction as apparent wind
 - Scale force linearly based on incidence angle: from 1 × current base force value (incidence angle 0 rad) to 0 (incidence angle PI/2 rad) to 1 again (incidence angle PI rad)

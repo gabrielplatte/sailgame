@@ -13,16 +13,33 @@ render_priority = 1
 transparency = 1
 albedo_color = Color(0, 0.8, 0.6666666, 1)
 albedo_texture = ExtResource("2_h2yge")
-roughness = 0.6
+roughness = 0.42
 uv1_triplanar = true
 stencil_mode = 3
 stencil_flags = 1
 stencil_compare = 5
 
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_lquwl"]
+sky_top_color = Color(0.33637246, 0.45565522, 0.61770606, 1)
+sky_horizon_color = Color(0.5926556, 0.66657, 0.7225099, 1)
+ground_bottom_color = Color(0.5166153, 0.53263044, 0.49380255, 1)
+ground_horizon_color = Color(0.55613136, 0.67038506, 0.77097327, 1)
+
+[sub_resource type="Sky" id="Sky_h2yge"]
+sky_material = SubResource("ProceduralSkyMaterial_lquwl")
+
 [sub_resource type="Environment" id="Environment_pk7y5"]
 background_mode = 2
+background_color = Color(0.39071617, 0.5440706, 0.77393454, 1)
+sky = SubResource("Sky_h2yge")
+ambient_light_source = 3
 ambient_light_color = Color(0.63579935, 0.63579947, 0.6357993, 1)
-ambient_light_energy = 2.63
+ambient_light_sky_contribution = 0.58
+ambient_light_energy = 3.37
+
+[sub_resource type="LabelSettings" id="LabelSettings_h2yge"]
+font_size = 31
+font_color = Color(1, 0.5019608, 0, 1)
 
 [node name="Main" type="Node3D" unique_id=642251443]
 script = ExtResource("1_ig7tw")
@@ -32,13 +49,21 @@ mesh = SubResource("QuadMesh_pk7y5")
 surface_material_override/0 = SubResource("StandardMaterial3D_86xdo")
 
 [node name="boat" parent="." unique_id=1866504484 instance=ExtResource("3_1bvp3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4, 0)
+swing_speed = 1.9
 
 [node name="Camera3D" type="Camera3D" parent="boat" unique_id=921419123]
-transform = Transform3D(1, 0, 0, 0, 1, 5.2154064e-08, 0, -5.2154064e-08, 1, 0, 0.99999994, 0.7000001)
-fov = 87.5
+transform = Transform3D(1, 0, 0, 0, 0.99999994, 8.940696e-08, 0, -8.940696e-08, 0.99999994, 0, 1.1999999, 1.0000001)
+fov = 47.6
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=312190950]
 transform = Transform3D(-0.43301272, 0.5, -0.75, -0.625, 0.43301266, 0.6495191, 0.649519, 0.75, 0.12499997, 0, 0, 0)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=2041127063]
 environment = SubResource("Environment_pk7y5")
+
+[node name="Label" type="Label" parent="." unique_id=903041158]
+unique_name_in_owner = true
+offset_right = 40.0
+offset_bottom = 23.0
+label_settings = SubResource("LabelSettings_h2yge")

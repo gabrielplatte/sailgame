@@ -11,3 +11,4 @@ Two floaters should do the job, but we'll have to test that and see how well it 
 
 Earlier prototypes used floaters low in the hull that pointed up, to actually detect submersion of a point on the boat, but those were never stable. This should be simpler to keep track of. 
 
+As of Sep 2026, this job is done more simply by Marker3D nodes.

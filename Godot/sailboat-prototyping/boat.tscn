@@ -5,6 +5,42 @@
 [ext_resource type="PackedScene" uid="uid://cq4ffpatnhlem" path="res://mast.tscn" id="2_henu8"]
 [ext_resource type="PackedScene" uid="uid://ltlhf0xjcdvv" path="res://rudder.tscn" id="3_anwow"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ma1tu"]
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_yd8na"]
+_surfaces = [{
+"aabb": AABB(-0.85756403, -3.2099074e-08, -1, 1.5451264, 1e-05, 1.7435707),
+"format": 34896613377,
+"index_count": 3,
+"index_data": PackedByteArray(0, 0, 1, 0, 2, 0),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 3,
+"vertex_data": PackedByteArray(255, 255, 120, 0, 0, 0, 0, 0, 0, 0, 251, 0, 0, 0, 0, 0, 24, 186, 0, 0, 255, 255, 0, 0)
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_anwow"]
+resource_name = "sail_Plane"
+_surfaces = [{
+"aabb": AABB(-0.85756403, -3.2099074e-08, -1, 1.5451264, 1e-05, 1.7435707),
+"attribute_data": PackedByteArray(0, 0, 255, 255, 0, 0, 255, 255, 0, 0, 255, 255),
+"format": 34896613399,
+"index_count": 3,
+"index_data": PackedByteArray(0, 0, 1, 0, 2, 0),
+"material": SubResource("StandardMaterial3D_ma1tu"),
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 3,
+"vertex_data": PackedByteArray(255, 255, 120, 0, 0, 0, 255, 191, 0, 0, 251, 0, 0, 0, 255, 191, 24, 186, 0, 0, 255, 255, 255, 191, 0, 0, 255, 127, 0, 0, 255, 127, 0, 0, 255, 127)
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_yd8na")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_war6k"]
+cull_mode = 2
+albedo_color = Color(0.4487517, 0.074334435, 0.103138976, 1)
+
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_henu8"]
 points = PackedVector3Array(0.87543374, 0.4387682, 2.1038046, 0.786857, 0.4438, 2.6874046, -0.06731542, -1.2331713, -0.8487342, -0.88599813, 0.30173105, 2.9378715, 0.12533914, 0.4438, -3.2668672, 0.034686886, -0.72141695, 2.6307628, 0.54641116, -0.31208563, -2.1791112, -0.8850057, 0.4193545, -0.70265, 0.7509867, -0.31208563, 2.1184876, -0.37427387, 0.6090001, -0.33710003, 0.8533545, 0.42017746, -1.0695962, -0.78361523, -0.31208563, 1.7094367, -0.06731542, -1.2331713, -1.8720025, -0.5790397, -0.31208563, -2.076528, 0.8533696, 0.09706539, 2.8352883, -0.8109068, 0.4357264, 2.6550999, -0.15558347, 0.4310775, -3.2175555, 0.1370698, -0.4143283, -2.9978542, 0.034686886, -1.2331713, -1.8720025, -0.68123233, -0.31208563, 2.6307628, -0.27208126, -0.4143283, -2.7926877, -0.71553826, 0.43377882, -1.7358218, -0.88599813, -0.10760027, 1.7094367, 0.8533696, -0.10760027, 2.0165453, 0.6872739, 0.43843415, -1.8386173, 0.6976861, -0.22829363, -0.50501305, 0.44402826, -0.31208563, -2.5881622, -0.06731542, -0.72141695, 2.6307628, -0.4766568, -0.31208563, -2.48622, 0.03132078, 0.26121882, -3.3959217, 0.21243149, 0.51168936, -2.25917, 0.83266497, 0.22400677, -1.0521699)
 
@@ -17,17 +53,33 @@ albedo_color = Color(1, 1, 1, 0)
 stencil_mode = 3
 stencil_flags = 2
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_86xdo"]
+top_radius = 0.03
+bottom_radius = 0.0
+height = 0.3125
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_onkqf"]
+albedo_color = Color(1, 0.5019608, 0, 1)
+emission = Color(0.31390777, 0.15742132, 2.4065375e-08, 1)
+emission_energy_multiplier = 3.29
+
 [node name="boat" type="RigidBody3D" unique_id=1866504484]
 script = ExtResource("1_anwow")
 
 [node name="dinghy" parent="." unique_id=1108682375 instance=ExtResource("1_annr2")]
 
 [node name="mast" parent="dinghy" unique_id=623547759 instance=ExtResource("2_henu8")]
+unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0006250888, 0.48310435, -0.9657596)
 
-[node name="sail" type="Marker3D" parent="dinghy/mast" unique_id=1007463864]
+[node name="sail_center" type="Marker3D" parent="dinghy/mast" unique_id=1007463864]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1707754, 0.62420416)
+
+[node name="sail" type="MeshInstance3D" parent="dinghy/mast" unique_id=1817596333]
+transform = Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, 0.00080887973, 1.1445059, 1.0007704)
+mesh = SubResource("ArrayMesh_anwow")
+surface_material_override/0 = SubResource("StandardMaterial3D_war6k")
 
 [node name="rudder" parent="dinghy" unique_id=533331030 instance=ExtResource("3_anwow")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.32618064, 1.4062232)
@@ -61,3 +113,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0.20000002, 1.4)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4723633, 0.50000006)
 mesh = SubResource("BoxMesh_pk7y5")
 surface_material_override/0 = SubResource("StandardMaterial3D_86xdo")
+
+[node name="pointer" type="Marker3D" parent="." unique_id=1944103839]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8675744, -0.90000004)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="pointer" unique_id=214058255]
+transform = Transform3D(-1, -8.742278e-08, 3.821371e-15, 0, -4.371139e-08, -1, 8.742278e-08, -1, 4.371139e-08, -3.8247467e-09, 0, 0.14375001)
+mesh = SubResource("CylinderMesh_86xdo")
+surface_material_override/0 = SubResource("StandardMaterial3D_onkqf")
