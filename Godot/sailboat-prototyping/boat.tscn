@@ -60,11 +60,14 @@ height = 0.3125
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_onkqf"]
 albedo_color = Color(1, 0.5019608, 0, 1)
-emission = Color(0.31390777, 0.15742132, 2.4065375e-08, 1)
-emission_energy_multiplier = 3.29
 
 [node name="boat" type="RigidBody3D" unique_id=1866504484]
+center_of_mass_mode = 1
+center_of_mass = Vector3(0, -0.17, -0.35)
 script = ExtResource("1_anwow")
+wind_speed = 1.0
+keel_efficiency = 0.592
+sail_efficiency = 0.304
 
 [node name="dinghy" parent="." unique_id=1108682375 instance=ExtResource("1_annr2")]
 
@@ -74,7 +77,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0006250888, 0.48310435, -0.
 
 [node name="sail_center" type="Marker3D" parent="dinghy/mast" unique_id=1007463864]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1707754, 0.62420416)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1707754, 0.45229465)
 
 [node name="sail" type="MeshInstance3D" parent="dinghy/mast" unique_id=1817596333]
 transform = Transform3D(0, 1, 0, -1, 0, 0, 0, 0, 1, 0.00080887973, 1.1445059, 1.0007704)
@@ -82,7 +85,12 @@ mesh = SubResource("ArrayMesh_anwow")
 surface_material_override/0 = SubResource("StandardMaterial3D_war6k")
 
 [node name="rudder" parent="dinghy" unique_id=533331030 instance=ExtResource("3_anwow")]
+unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.32618064, 1.4062232)
+
+[node name="rudder_center" type="Marker3D" parent="dinghy/rudder" unique_id=381867983]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.12144089, 0.04118395)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1043766317]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.3961457, 0.05039289)
@@ -117,8 +125,13 @@ surface_material_override/0 = SubResource("StandardMaterial3D_86xdo")
 [node name="pointer" type="Marker3D" parent="." unique_id=1944103839]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8675744, -0.90000004)
+visible = false
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="pointer" unique_id=214058255]
 transform = Transform3D(-1, -8.742278e-08, 3.821371e-15, 0, -4.371139e-08, -1, 8.742278e-08, -1, 4.371139e-08, -3.8247467e-09, 0, 0.14375001)
 mesh = SubResource("CylinderMesh_86xdo")
 surface_material_override/0 = SubResource("StandardMaterial3D_onkqf")
+
+[node name="keel_center" type="Marker3D" parent="." unique_id=1302348661]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0023275316, -0.49573815)

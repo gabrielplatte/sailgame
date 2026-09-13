@@ -5,13 +5,13 @@
 [ext_resource type="PackedScene" uid="uid://cgvrndldy8js0" path="res://boat.tscn" id="3_1bvp3"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_pk7y5"]
-size = Vector2(100, 100)
+size = Vector2(1000, 1000)
 orientation = 1
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_86xdo"]
 render_priority = 1
 transparency = 1
-albedo_color = Color(0, 0.8, 0.6666666, 1)
+albedo_color = Color(0, 0.8, 0.6666667, 0.64705884)
 albedo_texture = ExtResource("2_h2yge")
 roughness = 0.42
 uv1_triplanar = true
@@ -50,10 +50,15 @@ surface_material_override/0 = SubResource("StandardMaterial3D_86xdo")
 
 [node name="boat" parent="." unique_id=1866504484 instance=ExtResource("3_1bvp3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4, 0)
-swing_speed = 1.9
+wind_speed = 10.0
+swing_speed = 3.77
+keel_efficiency = 1.0
+wind_direction_vector = Vector3(0, 0, 1)
+sail_efficiency = 0.846
+rudder_efficiency = 0.762
 
 [node name="Camera3D" type="Camera3D" parent="boat" unique_id=921419123]
-transform = Transform3D(1, 0, 0, 0, 0.99999994, 8.940696e-08, 0, -8.940696e-08, 0.99999994, 0, 1.1999999, 1.0000001)
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 5.118952, -0.10323095)
 fov = 47.6
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=312190950]
