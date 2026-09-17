@@ -22,15 +22,15 @@ extends RigidBody3D
 @onready var mast = %mast
 
 @onready var keel_center = %keel_center
-@export_range(0.0, 1.0) var keel_efficiency:float = 0.9
+#@export_range(0.0, 1.0) var keel_efficiency:float = 0.9
 
 @onready var sail_center = %sail_center
 @export var wind_direction_vector = Vector3.ZERO
-@export_range(0.0, 1.0) var sail_efficiency:float = 0.9
+#@export_range(0.0, 1.0) var sail_efficiency:float = 0.9
 
 @onready var rudder = %rudder
 @onready var rudder_center = %rudder_center
-@export_range(0.0, 1.0) var rudder_efficiency:float = 0.9
+#@export_range(0.0, 1.0) var rudder_efficiency:float = 0.9
 
 @onready var start_basis := basis
 @onready var start_pos := global_position
@@ -42,7 +42,7 @@ func _ready():
 	pass
 
 func _physics_process(_delta): 
-	
+
 	#For interaction with vertex waves, modify the following so each floater pulls water height from the same sampler2D as the shader 
 	var wind_direction = wind_direction_vector.normalized()
 	var wind_vector = wind_direction * wind_speed
@@ -85,6 +85,7 @@ func _physics_process(_delta):
 # End temp code
 
 func deflect():
+	var sail_efficiency = 0.8
 	var wind_direction = wind_direction_vector.normalized()
 	var wind_vector = wind_direction * wind_speed
 	var lifter_position = sail_center.global_position
@@ -97,13 +98,12 @@ func deflect():
 	var y = v.cross(z).normalized()
 	var x = (y.cross(z)).normalized()
 	
-	var thetaz = v.angle_to(z)
-	var thetax = v.angle_to(x)
+	var theta_z = v.angle_to(z)
+	var theta_x = v.angle_to(x)
 	
-	var normal_force = z * cos(thetaz) * sail_efficiency
-	var parallel_force = x * sin(thetax)
+	var normal_force = z * (cos(theta_z)) * sail_efficiency
 	
-	var force_vector = v.length() * air_viscosity * (normal_force + parallel_force * cos(thetaz))
+	var force_vector = v.length() * air_viscosity * (normal_force)
 	
 	if force_vector.length() <= 0.1:
 		force_vector = Vector3.ZERO
@@ -116,22 +116,22 @@ func deflect():
 	DebugDraw3D.draw_line(lifter_position, lifter_position - v, Color(1,0,0))
 	
 func use_keel():
+	var keel_efficiency = 1.5
 	var lifter_position = keel_center.global_position
 	var lifter_vel = get_point_velocity(lifter_position)
 	var v = -lifter_vel
-	
 	var lifter_normal = keel_center.global_transform.basis.x
 	var z = lifter_normal
 	
 	var y = v.cross(z).normalized()
 	var x = (y.cross(z)).normalized()
 	
-	var theta = v.angle_to(z)
+	var theta_z = v.angle_to(z)
+	var theta_x = v.angle_to(x)
 	
-	var normal_force = z * cos(theta) * keel_efficiency
-	var parallel_force = x * sin(theta)
+	var normal_force = z * (cos(theta_z)) * keel_efficiency
 	
-	var force_vector = water_viscosity * (normal_force + parallel_force * cos(theta))
+	var force_vector = v.length() * water_viscosity * (normal_force)
 	
 	if force_vector.length() <= 0.1:
 		force_vector = Vector3.ZERO
@@ -147,26 +147,24 @@ func use_keel():
 	#label.text += "\n" + str(z)
 
 func use_rudder():
+	var rudder_efficiency = 0.8
 	var lifter_position = rudder_center.global_position
 	var lifter_vel = get_point_velocity(lifter_position)
 	var v = -lifter_vel
-	
 	var lifter_normal = rudder_center.global_transform.basis.x
 	var z = lifter_normal
-	
 	var y = v.cross(z).normalized()
 	var x = (y.cross(z)).normalized()
 	
-	var theta = v.angle_to(z)
+	var theta_z = v.angle_to(z)
+	var theta_x = v.angle_to(x)
 	
-	var normal_force = z * cos(theta) * rudder_efficiency
-	var parallel_force = x * sin(theta)
+	var normal_force = z * (cos(theta_z)) 
+	var force_vector = v.length() * water_viscosity * rudder_efficiency * normal_force
 	
-	var force_vector = water_viscosity * (normal_force + parallel_force * cos(theta))
-	
-	if force_vector.length() <= 0.1:
-		force_vector = Vector3.ZERO
-	
+	#if force_vector.length() <= 0.1:
+		#force_vector = Vector3.ZERO
+	print(force_vector.length())
 	apply_force(force_vector, lifter_position - global_position)
 	DebugDraw3D.draw_line(lifter_position, lifter_position + force_vector, Color(0.0, 1.0, 0.0))
 	DebugDraw3D.draw_line(lifter_position, lifter_position + lifter_normal, Color(0.0, 0.0, 1.0))
