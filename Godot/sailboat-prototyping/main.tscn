@@ -50,16 +50,16 @@ surface_material_override/0 = SubResource("StandardMaterial3D_86xdo")
 
 [node name="boat" parent="." unique_id=1866504484 instance=ExtResource("3_1bvp3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4, 0)
-wind_speed = 10.0
 swing_speed = 3.77
-keel_efficiency = 0.963
 wind_direction_vector = Vector3(1, 0, 0)
-sail_efficiency = 0.846
-rudder_efficiency = 1.0
 
 [node name="Camera3D" type="Camera3D" parent="boat" unique_id=921419123]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 5.118952, -0.10323095)
 fov = 47.6
+
+[node name="Camera3D2" type="Camera3D" parent="boat" unique_id=1514133451]
+transform = Transform3D(1, 0, 0, 0, 0.9699195, 0.24342601, 0, -0.24342601, 0.9699195, 0.19191253, 1.3225148, 1.0850608)
+current = true
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=312190950]
 transform = Transform3D(-0.43301272, 0.5, -0.75, -0.625, 0.43301266, 0.6495191, 0.649519, 0.75, 0.12499997, 0, 0, 0)

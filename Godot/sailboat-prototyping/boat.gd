@@ -66,7 +66,8 @@ func _physics_process(_delta):
 	use_sail0()
 	use_rudder()
 	use_keel()
-	DebugDraw3D.draw_line(pointer.global_position, pointer.global_position + wind_direction + global_position, Color(1.0, 0.5, 0.0, 1.0))
+	#DebugDraw3D.draw_line(pointer.global_position, pointer.global_position + wind_direction + global_position, Color(1.0, 0.5, 0.0, 1.0))
+
 # Temp code for testing, replace with sail function calls
 	#var self_propel_vector: Vector3
 	#self_propel_vector.x = Input.get_axis("ui_left", "ui_right")
@@ -112,11 +113,11 @@ func use_sail0():
 		force_vector = Vector3.ZERO
 	
 	apply_force(force_vector, lifter_position - global_position)
-	DebugDraw3D.draw_line(lifter_position, lifter_position + force_vector, Color(0.0, 1.0, 0.0))
-	DebugDraw3D.draw_line(lifter_position, lifter_position + z, Color(0.0, 0.0, 1.0))
-	DebugDraw3D.draw_line(lifter_position, lifter_position + x, Color())
-	DebugDraw3D.draw_line(lifter_position, lifter_position + y, Color(1.0, 1.0, 0.0))
-	DebugDraw3D.draw_line(lifter_position, lifter_position - v, Color(1,0,0))
+	#DebugDraw3D.draw_line(lifter_position, lifter_position + force_vector, Color(0.0, 1.0, 0.0))
+	#DebugDraw3D.draw_line(lifter_position, lifter_position + z, Color(0.0, 0.0, 1.0))
+	#DebugDraw3D.draw_line(lifter_position, lifter_position + x, Color())
+	#DebugDraw3D.draw_line(lifter_position, lifter_position + y, Color(1.0, 1.0, 0.0))
+	#DebugDraw3D.draw_line(lifter_position, lifter_position - v, Color(1,0,0))
 	
 	
 	
@@ -142,11 +143,11 @@ func use_keel():
 		force_vector = Vector3.ZERO
 	
 	apply_force(force_vector, lifter_position - global_position)
-	DebugDraw3D.draw_line(lifter_position, lifter_position + force_vector, Color(0.0, 1.0, 0.0))
-	DebugDraw3D.draw_line(lifter_position, lifter_position + lifter_normal, Color(0.0, 0.0, 1.0))
-	DebugDraw3D.draw_line(lifter_position, lifter_position + x, Color())
-	DebugDraw3D.draw_line(lifter_position, lifter_position + y, Color(1.0, 1.0, 0.0))
-	DebugDraw3D.draw_line(lifter_position, lifter_position + v, Color(1,0,0))
+	#DebugDraw3D.draw_line(lifter_position, lifter_position + force_vector, Color(0.0, 1.0, 0.0))
+	#DebugDraw3D.draw_line(lifter_position, lifter_position + lifter_normal, Color(0.0, 0.0, 1.0))
+	#DebugDraw3D.draw_line(lifter_position, lifter_position + x, Color())
+	#DebugDraw3D.draw_line(lifter_position, lifter_position + y, Color(1.0, 1.0, 0.0))
+	#DebugDraw3D.draw_line(lifter_position, lifter_position + v, Color(1,0,0))
 
 	#var z = force_vector.x
 	#label.text += "\n" + str(z)
@@ -170,11 +171,11 @@ func use_rudder():
 	if force_vector.length() <= 0.1:
 		force_vector = Vector3.ZERO
 	apply_force(force_vector, lifter_position - global_position)
-	DebugDraw3D.draw_line(lifter_position, lifter_position + force_vector, Color(0.0, 1.0, 0.0))
-	DebugDraw3D.draw_line(lifter_position, lifter_position + lifter_normal, Color(0.0, 0.0, 1.0))
-	DebugDraw3D.draw_line(lifter_position, lifter_position + x, Color())
-	DebugDraw3D.draw_line(lifter_position, lifter_position + y, Color(1.0, 1.0, 0.0))
-	DebugDraw3D.draw_line(lifter_position, lifter_position - v, Color(1,0,0))
+	#DebugDraw3D.draw_line(lifter_position, lifter_position + force_vector, Color(0.0, 1.0, 0.0))
+	#DebugDraw3D.draw_line(lifter_position, lifter_position + lifter_normal, Color(0.0, 0.0, 1.0))
+	#DebugDraw3D.draw_line(lifter_position, lifter_position + x, Color())
+	#DebugDraw3D.draw_line(lifter_position, lifter_position + y, Color(1.0, 1.0, 0.0))
+	#DebugDraw3D.draw_line(lifter_position, lifter_position - v, Color(1,0,0))
 
 func get_point_velocity(point: Vector3)-> Vector3:
 	return linear_velocity + angular_velocity.cross(point - global_transform.origin)

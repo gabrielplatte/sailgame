@@ -3,8 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://c3xd7xh2injl6" path="res://dinghy.glb" id="1_twl7g"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r4ro0"]
-transparency = 1
-albedo_color = Color(0, 0.41960785, 0.078431375, 0.49411765)
+albedo_color = Color(0, 0.41960785, 0.078431375, 1)
 
 [node name="dinghy" unique_id=1108682375 instance=ExtResource("1_twl7g")]
 
