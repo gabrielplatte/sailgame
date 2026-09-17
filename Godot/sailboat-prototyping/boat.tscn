@@ -65,7 +65,7 @@ albedo_color = Color(1, 0.5019608, 0, 1)
 center_of_mass_mode = 1
 center_of_mass = Vector3(0, -0.17, -0.35)
 script = ExtResource("1_anwow")
-wind_speed = 1.0
+wind_speed = 11.43
 
 [node name="dinghy" parent="." unique_id=1108682375 instance=ExtResource("1_annr2")]
 
