@@ -3,12 +3,11 @@ extends RigidBody3D
 @onready var label = %Label
 @onready var pointer = %pointer
 
-var wind_speed :float= 0.0
 @onready var air_viscosity = 0.1
 
 @export var float_force := 0.8
-@export var water_drag := 0.005
-@export var water_ang_drag := 0.006
+var water_drag := 0.001
+var water_ang_drag := 0.005
 @onready var water_viscosity = 0.7
 
 @export var parachute_coefficient: float = 1.0
@@ -45,7 +44,6 @@ func _physics_process(_delta):
 
 	#For interaction with vertex waves, modify the following so each floater pulls water height from the same sampler2D as the shader 
 	var wind_direction = wind_direction_vector.normalized()
-	var wind_vector = wind_direction * wind_speed
 	#print(wind_direction)
 	for f in floaters:
 		var depth = water_height - f.global_position.y
@@ -65,12 +63,10 @@ func _physics_process(_delta):
 		linear_velocity = Vector3.ZERO
 		angular_velocity = Vector3.ZERO
 		mast.rotation.y = 0
-	print(wind_speed)
 	use_sail0()
 	use_rudder()
 	use_keel()
-	pointer.look_at(pointer.global_transform.origin - wind_vector, Vector3.UP)
-	DebugDraw3D.draw_line(pointer.global_position, pointer.global_position + wind_vector + global_position, Color(1.0, 0.5, 0.0, 1.0))
+	DebugDraw3D.draw_line(pointer.global_position, pointer.global_position + wind_direction + global_position, Color(1.0, 0.5, 0.0, 1.0))
 # Temp code for testing, replace with sail function calls
 	#var self_propel_vector: Vector3
 	#self_propel_vector.x = Input.get_axis("ui_left", "ui_right")
@@ -125,7 +121,7 @@ func use_sail0():
 	
 	
 func use_keel():
-	var keel_efficiency = 2.5
+	var keel_efficiency = 7.5
 	var lifter_position = keel_center.global_position
 	var lifter_vel = get_point_velocity(lifter_position)
 	var v = -lifter_vel
