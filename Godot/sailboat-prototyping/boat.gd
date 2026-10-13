@@ -1,38 +1,39 @@
 extends RigidBody3D
 
+# Variable declarations to be used throughout the script. When localizing: move to the lowest level possible before variables start getting duplicated.
+	# Items in tree that need calling as variables
 @onready var label = %Label
 @onready var pointer = %pointer
+@onready var mast = %mast
+@onready var keel_center = %keel_center
+@onready var sail_center = %sail_center
+@onready var rudder = %rudder
+@onready var rudder_center = %rudder_center
 
-@onready var air_viscosity = 0.1
+	# Exported values for functions
+		# Viscosity values for the lifting surface code. These may be deprecated soon, depending on where we go with that process.
+@export var air_viscosity = 0.1
+@export var water_viscosity = 0.7
 
+		# 
+@onready var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 @export var float_force := 0.8
-var water_drag := 0.001
-var water_ang_drag := 0.005
-@onready var water_viscosity = 0.7
-
-@export var parachute_coefficient: float = 1.0
 
 @export var swing_speed = 1.0
 
-@onready var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
+@export var wind_direction_vector = Vector3.ZERO
+var wind_direction = wind_direction_vector.normalized()
+
+
+
 
 @onready var floaters = %FloaterContainer.get_children()
 
-@onready var mast = %mast
-
-@onready var keel_center = %keel_center
-#@export_range(0.0, 1.0) var keel_efficiency:float = 0.9
-
-@onready var sail_center = %sail_center
-@export var wind_direction_vector = Vector3.ZERO
-#@export_range(0.0, 1.0) var sail_efficiency:float = 0.9
-
-@onready var rudder = %rudder
-@onready var rudder_center = %rudder_center
-#@export_range(0.0, 1.0) var rudder_efficiency:float = 0.9
-
 @onready var start_basis := basis
 @onready var start_pos := global_position
+
+var water_drag := 0.001
+var water_ang_drag := 0.005
 
 const water_height = 0.0
 
@@ -105,8 +106,7 @@ func use_sail0():
 	#DebugDraw3D.draw_line(lifter_position, lifter_position + x, Color())
 	#DebugDraw3D.draw_line(lifter_position, lifter_position + y, Color(1.0, 1.0, 0.0))
 	#DebugDraw3D.draw_line(lifter_position, lifter_position - v, Color(1,0,0))
-	
-	
+
 	
 func use_keel():
 	var keel_efficiency = 7.5
