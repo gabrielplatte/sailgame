@@ -68,19 +68,6 @@ func _physics_process(_delta):
 	use_keel()
 	#DebugDraw3D.draw_line(pointer.global_position, pointer.global_position + wind_direction + global_position, Color(1.0, 0.5, 0.0, 1.0))
 
-# Temp code for testing, replace with sail function calls
-	#var self_propel_vector: Vector3
-	#self_propel_vector.x = Input.get_axis("ui_left", "ui_right")
-	#self_propel_vector.z = Input.get_axis("ui_up", "ui_down")
-	#self_propel_vector.y = 0.0
-	#
-	#var to_local = Vector3.FORWARD.angle_to(-global_transform.basis.z)
-	#self_propel_vector = self_propel_vector.rotated(Vector3.UP, to_local)
-#
-	#var force = self_propel_vector.normalized() * wind_force
-	#apply_force(force, sail.global_position - global_position)
-# End temp code
-
 func use_sail0():
 	var wind_speed = 30.0
 	var sail_efficiency = 0.8
