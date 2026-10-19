@@ -1,7 +1,7 @@
 extends RigidBody3D
 
-# Variable declarations to be used throughout the script. When localizing: move to the lowest level possible before variables start getting duplicated.
-	# Items in tree that need calling as variables
+# Top-level declarations. (When localizing, move to the lowest level possible before variables start getting duplicated):
+	# Nodes in tree that need calling as variables:
 @onready var label = %Label
 @onready var pointer = %pointer
 @onready var mast = %mast
@@ -9,43 +9,28 @@ extends RigidBody3D
 @onready var sail_center = %sail_center
 @onready var rudder = %rudder
 @onready var rudder_center = %rudder_center
-
-	# Exported values for functions
-		# Viscosity values for the lifting surface code. These may be deprecated soon, depending on where we go with that process.
+	# Exported values for functions:
+		# Viscosity values for the lifting surface code (These may be deprecated soon, depending on where we go with that process):
 @export var air_viscosity = 0.1
 @export var water_viscosity = 0.7
-
-		# 
+		# Physical values:
 @onready var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 @export var float_force := 0.8
-
-@export var swing_speed = 1.0
-
+		# Environmental values:
 @export var wind_direction_vector = Vector3.ZERO
 var wind_direction = wind_direction_vector.normalized()
-
-
-
-
-@onready var floaters = %FloaterContainer.get_children()
-
 @onready var start_basis := basis
 @onready var start_pos := global_position
-
+const water_height = 0.0
+		# Boat-specific values:
+@export var swing_speed = 1.0
+@onready var floaters = %FloaterContainer.get_children()
 var water_drag := 0.001
 var water_ang_drag := 0.005
 
-const water_height = 0.0
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass
-
 func _physics_process(_delta): 
-
 	#For interaction with vertex waves, modify the following so each floater pulls water height from the same sampler2D as the shader 
 	var wind_direction = wind_direction_vector.normalized()
-	#print(wind_direction)
 	for f in floaters:
 		var depth = water_height - f.global_position.y
 		if depth > 0: 
