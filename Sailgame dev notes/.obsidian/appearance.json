@@ -3,5 +3,6 @@
   "theme": "obsidian",
   "enabledCssSnippets": [
     "italic-h6"
-  ]
+  ],
+  "showRibbon": true
 }

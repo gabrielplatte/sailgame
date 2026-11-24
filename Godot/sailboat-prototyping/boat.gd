@@ -10,35 +10,39 @@ extends RigidBody3D
 @onready var rudder = %rudder
 @onready var rudder_center = %rudder_center
 	# Exported values for functions:
-		# Viscosity values for the lifting surface code (These may be deprecated soon, depending on where we go with that process):
-@export var air_viscosity = 0.1
-@export var water_viscosity = 0.7
+		# Viscosity values for the lifting surface code (These may be deprecated soon, depending where we go with that process):
+# @export var air_viscosity = 0.1
+# @export var water_viscosity = 0.7
 		# Physical values:
 @onready var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
-@export var float_force := 0.8
+@export var float_force := 40.0
 		# Environmental values:
-@export var wind_direction_vector = Vector3.ZERO
-var wind_direction = wind_direction_vector.normalized()
+@export var wind_direction_vector := Vector3(0, 0, 1)
+@export var wind_speed := 100.0
+var wind_direction: Vector3
+var wind: Vector3
 @onready var start_basis := basis
 @onready var start_pos := global_position
 const water_height = 0.0
 		# Boat-specific values:
 @export var swing_speed = 1.0
 @onready var floaters = %FloaterContainer.get_children()
-var water_drag := 0.001
-var water_ang_drag := 0.005
+var water_drag := 0.003
+var water_ang_drag := 0.008
 
-func _physics_process(_delta): 
+
+func _physics_process(_delta):
 	#For interaction with vertex waves, modify the following so each floater pulls water height from the same sampler2D as the shader 
-	var wind_direction = wind_direction_vector.normalized()
+	wind_direction = wind_direction_vector.normalized()
+	wind = wind_direction * wind_speed
 	for f in floaters:
 		var depth = water_height - f.global_position.y
-		if depth > 0: 
+		if depth > 0:
 			apply_force(Vector3.UP * float_force * gravity * depth, f.global_position - global_position)
 
-	var mast_swing_axis = -Input.get_axis("swing left", "swing right")
+	var mast_swing_axis = - Input.get_axis("swing left", "swing right")
 	mast.rotation.y += mast_swing_axis * swing_speed * 0.01
-	mast.rotation.y = clamp(mast.rotation.y, -(PI/2), (PI/2))
+	mast.rotation.y = clamp(mast.rotation.y, - (PI / 2), (PI / 2))
 	
 	var rudder_turn_axis = Input.get_axis("turn left", "turn right")
 	rudder.rotation.y = rudder_turn_axis * deg_to_rad(45)
@@ -49,107 +53,133 @@ func _physics_process(_delta):
 		linear_velocity = Vector3.ZERO
 		angular_velocity = Vector3.ZERO
 		mast.rotation.y = 0
-	use_sail0()
-	use_rudder()
-	use_keel()
+	var sail0_force = do_lift(sail_center, 20.0, 0.5)
+	apply_force(sail0_force, sail_center.global_position - global_position)
+	
+	# use_sail0()
+	# use_rudder()
+	# use_keel()
 	#DebugDraw3D.draw_line(pointer.global_position, pointer.global_position + wind_direction + global_position, Color(1.0, 0.5, 0.0, 1.0))
 
-func use_sail0():
-	var wind_speed = 30.0
-	var sail_efficiency = 0.8
-	var wind_direction = wind_direction_vector.normalized()
-	var wind_vector = wind_direction * wind_speed
-	var lifter_position = sail_center.global_position
-	var lifter_vel = get_point_velocity(lifter_position)
-	var apparent_wind = wind_vector - lifter_vel
-	var v = apparent_wind
-	var lifter_normal = sail_center.global_transform.basis.x
-	var z = lifter_normal
-	
-	var y = v.cross(z).normalized()
-	var x = (y.cross(z)).normalized()
-	
-	var theta_z = v.angle_to(z)
-	var theta_x = v.angle_to(x)
-	
-	var deflect_force_vector = v.length() * air_viscosity * sail_efficiency * cos(theta_z) * z
+func do_lift(body: Node, size: float, wingmult: float) -> Vector3:
+	var apparent_wind = wind - get_point_velocity(body.position)
+	var normal = body.global_transform.basis.x
+	var axis = -apparent_wind.cross(normal)
+	var theta = -apparent_wind.angle_to(normal)
+	var latdir = (axis.cross(-apparent_wind)).normalized()
+	var lindir = apparent_wind.normalized()
 
-	var bernoulli_force_vector = v.length() * air_viscosity * sail_efficiency * z * ((cos(2 * theta_x) + 1) * 0.5)
-	if theta_z > PI/2:
-		bernoulli_force_vector *= -1
-	if theta_z >= deg_to_rad(85) and theta_z <= deg_to_rad(95):
-		bernoulli_force_vector *= 0
+	var lat = latdir * size * (sin(PI + (2 * theta))) 
+	var lin = lindir * size * (sin(TAU + theta) + 1)
+	var wingbuff = wingmult * sin(theta) + 1
+	var force = lin + (lat * wingbuff)
 	
-	var force_vector = (deflect_force_vector + bernoulli_force_vector)/2
+	label.text = "p = " + str(theta/PI) + "\nlin = " + str(lin.length()) + "\nlat = " + str(lat.length()) + "\nwingbuff = " + str(wingbuff)
+	DebugDraw3D.draw_line(body.global_position, body.global_position + (0.1 * lin), Color(1.0, 0.5, 0.0, 1.0))
+	DebugDraw3D.draw_line(body.global_position, body.global_position + (0.1 * lat), Color(1.0, 1.0, 0.0, 1.0))
+	DebugDraw3D.draw_line(body.global_position, body.global_position + (0.1 * lat * wingbuff), Color(1.0, 0.0, 0.0, 0.5))
+	DebugDraw3D.draw_line(body.global_position, body.global_position + normal, Color(0.0, 0.0, 0.0, 1.0))
+	DebugDraw3D.draw_line(sail_center.global_position, sail_center.global_position - apparent_wind, Color(0.0, 0.0, 1.0, 1.0))
 	
-	if force_vector.length() <= 0.1:
-		force_vector = Vector3.ZERO
+
+	return force
+
+# func use_sail0():
+# 	var wind_speed = 0.0
+# 	var sail_efficiency = 0.8
+# 	var wind_direction = wind_direction_vector.normalized()
+# 	var wind_vector = wind_direction * wind_speed
+# 	var lifter_position = sail_center.global_position
+# 	var lifter_vel = get_point_velocity(lifter_position)
+# 	var apparent_wind = wind_vector - lifter_vel
+# 	var v = apparent_wind
+# 	var lifter_normal = sail_center.global_transform.basis.x
+# 	var z = lifter_normal
 	
-	apply_force(force_vector, lifter_position - global_position)
-	#DebugDraw3D.draw_line(lifter_position, lifter_position + force_vector, Color(0.0, 1.0, 0.0))
-	#DebugDraw3D.draw_line(lifter_position, lifter_position + z, Color(0.0, 0.0, 1.0))
-	#DebugDraw3D.draw_line(lifter_position, lifter_position + x, Color())
-	#DebugDraw3D.draw_line(lifter_position, lifter_position + y, Color(1.0, 1.0, 0.0))
-	#DebugDraw3D.draw_line(lifter_position, lifter_position - v, Color(1,0,0))
+# 	var y = v.cross(z).normalized()
+# 	var x = (y.cross(z)).normalized()
+	
+# 	var theta_z = v.angle_to(z)
+# 	var theta_x = v.angle_to(x)
+	
+# 	var deflect_force_vector = v.length() * air_viscosity * sail_efficiency * cos(theta_z) * z
+
+# 	var bernoulli_force_vector = v.length() * air_viscosity * sail_efficiency * z * ((cos(2 * theta_x) + 1) * 0.5)
+# 	if theta_z > PI / 2:
+# 		bernoulli_force_vector *= -1
+# 	if theta_z >= deg_to_rad(85) and theta_z <= deg_to_rad(95):
+# 		bernoulli_force_vector *= 0
+	
+# 	var force_vector = (deflect_force_vector + bernoulli_force_vector) / 2
+	
+# 	if force_vector.length() <= 0.1:
+# 		force_vector = Vector3.ZERO
+	
+# 	apply_force(force_vector, lifter_position - global_position)
+# 	#DebugDraw3D.draw_line(lifter_position, lifter_position + force_vector, Color(0.0, 1.0, 0.0))
+# 	#DebugDraw3D.draw_line(lifter_position, lifter_position + z, Color(0.0, 0.0, 1.0))
+# 	#DebugDraw3D.draw_line(lifter_position, lifter_position + x, Color())
+# 	#DebugDraw3D.draw_line(lifter_position, lifter_position + y, Color(1.0, 1.0, 0.0))
+# 	#DebugDraw3D.draw_line(lifter_position, lifter_position - v, Color(1,0,0))
 
 	
-func use_keel():
-	var keel_efficiency = 7.5
-	var lifter_position = keel_center.global_position
-	var lifter_vel = get_point_velocity(lifter_position)
-	var v = -lifter_vel
-	var lifter_normal = keel_center.global_transform.basis.x
-	var z = lifter_normal
+# func use_keel():
+# 	var keel_efficiency = 7.5
+# 	var lifter_position = keel_center.global_position
+# 	var lifter_vel = get_point_velocity(lifter_position)
+# 	var v = - lifter_vel
+# 	var lifter_normal = keel_center.global_transform.basis.x
+# 	var z = lifter_normal
 	
-	var y = v.cross(z).normalized()
-	var x = (y.cross(z)).normalized()
+# 	var y = v.cross(z).normalized()
+# 	var x = (y.cross(z)).normalized()
 	
-	var theta_z = v.angle_to(z)
-	var theta_x = v.angle_to(x)
+# 	var theta_z = v.angle_to(z)
+# 	var theta_x = v.angle_to(x)
 	
-	var normal_force = z * (cos(theta_z)) * keel_efficiency
+# 	var normal_force = z * (cos(theta_z)) * keel_efficiency
 	
-	var force_vector = v.length() * water_viscosity * (normal_force)
+# 	var force_vector = v.length() * water_viscosity * (normal_force)
 	
-	if force_vector.length() <= 0.1:
-		force_vector = Vector3.ZERO
+# 	if force_vector.length() <= 0.1:
+# 		force_vector = Vector3.ZERO
 	
-	apply_force(force_vector, lifter_position - global_position)
-	#DebugDraw3D.draw_line(lifter_position, lifter_position + force_vector, Color(0.0, 1.0, 0.0))
-	#DebugDraw3D.draw_line(lifter_position, lifter_position + lifter_normal, Color(0.0, 0.0, 1.0))
-	#DebugDraw3D.draw_line(lifter_position, lifter_position + x, Color())
-	#DebugDraw3D.draw_line(lifter_position, lifter_position + y, Color(1.0, 1.0, 0.0))
-	#DebugDraw3D.draw_line(lifter_position, lifter_position + v, Color(1,0,0))
+# 	apply_force(force_vector, lifter_position - global_position)
+# 	#DebugDraw3D.draw_line(lifter_position, lifter_position + force_vector, Color(0.0, 1.0, 0.0))
+# 	#DebugDraw3D.draw_line(lifter_position, lifter_position + lifter_normal, Color(0.0, 0.0, 1.0))
+# 	#DebugDraw3D.draw_line(lifter_position, lifter_position + x, Color())
+# 	#DebugDraw3D.draw_line(lifter_position, lifter_position + y, Color(1.0, 1.0, 0.0))
+# 	#DebugDraw3D.draw_line(lifter_position, lifter_position + v, Color(1,0,0))
 
-	#var z = force_vector.x
-	#label.text += "\n" + str(z)
+# 	#var z = force_vector.x
+# 	#label.text += "\n" + str(z)
 
-func use_rudder():
-	var rudder_efficiency = 0.8
-	var lifter_position = rudder_center.global_position
-	var lifter_vel = get_point_velocity(lifter_position)
-	var v = -lifter_vel
-	var lifter_normal = rudder_center.global_transform.basis.x
-	var z = lifter_normal
-	var y = v.cross(z).normalized()
-	var x = (y.cross(z)).normalized()
+# func use_rudder():
+# 	var rudder_efficiency = 0.8
+# 	var lifter_position = rudder_center.global_position
+# 	var lifter_vel = get_point_velocity(lifter_position)
+# 	var v = - lifter_vel
+# 	var lifter_normal = rudder_center.global_transform.basis.x
+# 	var z = lifter_normal
+# 	var y = v.cross(z).normalized()
+# 	var x = (y.cross(z)).normalized()
 	
-	var theta_z = v.angle_to(z)
-	var theta_x = v.angle_to(x)
+# 	var theta_z = v.angle_to(z)
+# 	var theta_x = v.angle_to(x)
 	
-	var normal_force = z * (cos(theta_z)) 
-	var force_vector = v.length() * water_viscosity * rudder_efficiency * normal_force
+# 	var normal_force = z * (cos(theta_z))
+# 	var force_vector = v.length() * water_viscosity * rudder_efficiency * normal_force
 	
-	if force_vector.length() <= 0.1:
-		force_vector = Vector3.ZERO
-	apply_force(force_vector, lifter_position - global_position)
-	#DebugDraw3D.draw_line(lifter_position, lifter_position + force_vector, Color(0.0, 1.0, 0.0))
-	#DebugDraw3D.draw_line(lifter_position, lifter_position + lifter_normal, Color(0.0, 0.0, 1.0))
-	#DebugDraw3D.draw_line(lifter_position, lifter_position + x, Color())
-	#DebugDraw3D.draw_line(lifter_position, lifter_position + y, Color(1.0, 1.0, 0.0))
-	#DebugDraw3D.draw_line(lifter_position, lifter_position - v, Color(1,0,0))
+# 	if force_vector.length() <= 0.1:
+# 		force_vector = Vector3.ZERO
+# 	apply_force(force_vector, lifter_position - global_position)
+# 	#DebugDraw3D.draw_line(lifter_position, lifter_position + force_vector, Color(0.0, 1.0, 0.0))
+# 	#DebugDraw3D.draw_line(lifter_position, lifter_position + lifter_normal, Color(0.0, 0.0, 1.0))
+# 	#DebugDraw3D.draw_line(lifter_position, lifter_position + x, Color())
+# 	#DebugDraw3D.draw_line(lifter_position, lifter_position + y, Color(1.0, 1.0, 0.0))
+# 	#DebugDraw3D.draw_line(lifter_position, lifter_position - v, Color(1,0,0))
 
-func get_point_velocity(point: Vector3)-> Vector3:
+func get_point_velocity(point: Vector3) -> Vector3:
 	return linear_velocity + angular_velocity.cross(point - global_transform.origin)
 
 func _integrate_forces(state: PhysicsDirectBodyState3D):

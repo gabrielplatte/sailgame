@@ -34,8 +34,29 @@
               "icon": "lucide-file",
               "title": "Sail mechanics"
             }
+          },
+          {
+            "id": "959b77a70d931043",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          },
+          {
+            "id": "3ad2590c5a0a9dc9",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
           }
-        ]
+        ],
+        "currentTab": 3
       }
     ],
     "direction": "vertical"
@@ -196,10 +217,11 @@
       "bases:Create new base": false
     }
   },
-  "active": "4e21af8b03fc0e0b",
+  "active": "3ad2590c5a0a9dc9",
   "lastOpenFiles": [
-    "Boat mechanics.md",
+    "stars.md",
     "Sail mechanics.md",
+    "Boat mechanics.md",
     "Sailing prototype project.md"
   ]
 }
